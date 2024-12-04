@@ -1,0 +1,13 @@
+/* Desktop styles */
+.ant-farm {
+  width: 800px;
+  height: 600px;
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .ant-farm {
+    width: 100vw;
+    height: 100vh;
+  }
+} 

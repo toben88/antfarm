@@ -422,11 +422,11 @@ export class AntRacer {
         
         this.updateCameraPosition();
         this.drawBackground();
-        this.drawScorchMarks();  // Draw scorch marks before track
         this.drawTrack();
+        this.drawScorchMarks();  // <-- Moved here, AFTER drawTrack()
         
         // Add new scorch mark every few frames when burning
-        if (this.magnifyingGlass.active && Math.random() < 0.3) {  // 30% chance each frame
+        if (this.magnifyingGlass.active && Math.random() < 0.3) {
             this.addScorchMark();
         }
 

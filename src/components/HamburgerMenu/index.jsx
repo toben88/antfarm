@@ -16,8 +16,10 @@ const HamburgerMenu = () => {
       
       {isOpen && (
         <div className="menu-items">
-          <a href="/farm" className="menu-item">Farm</a>
-          <a href="/ant4" className="menu-item">Race</a>
+          <a href="/" className="menu-item">Farm</a>
+          <a href="/race" className="menu-item">Race</a>
+          <a href="/war" className="menu-item">War</a>
+          <a href="/mint" className="menu-item">Mint</a>
           <div className="menu-item" onClick={() => {
             alert("About RicoVision Ant Farm\n\nA blockchain visualization experiment showing NFT contract addresses as ants moving through an interconnected colony. Watch as digital assets come to life in this interactive display.");
           }}>About</div>

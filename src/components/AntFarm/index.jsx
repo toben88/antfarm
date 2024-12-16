@@ -4,11 +4,40 @@ import { TUNNEL_PATHS, GROUND_LEVEL, FRAME_COLOR, TUNNEL_COLOR, SAND_COLOR, SAND
 import { updateAntPosition, findNextTunnel, shouldReturnToGround } from './utils/antMovement';
 import { drawAnt } from './utils/antDrawing';
 import antGif from './assets/ant.png';
+import './styles.css';
 
 const AntFarm = () => {
   const canvasRef = useRef(null);
   const [ants, setAnts] = useState([]);
   const frameIndexRef = useRef(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(true);
+
+  // Check device and orientation
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    const checkOrientation = () => {
+      setIsLandscape(window.innerWidth > window.innerHeight);
+    };
+
+    // Initial checks
+    checkDevice();
+    checkOrientation();
+
+    // Add listeners
+    window.addEventListener('resize', checkDevice);
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', checkOrientation);
+
+    return () => {
+      window.removeEventListener('resize', checkDevice);
+      window.removeEventListener('resize', checkOrientation);
+      window.removeEventListener('orientationchange', checkOrientation);
+    };
+  }, []);
 
   // Initialize ants with NFT contract addresses
   useEffect(() => {
@@ -169,17 +198,36 @@ const AntFarm = () => {
     return () => window.cancelAnimationFrame(animationFrameId);
   }, [ants]);
 
+  // Render orientation message for mobile in portrait mode
+  if (isMobile && !isLandscape) {
+    return (
+      <div className="rotate-device">
+        <div className="rotate-message">
+          Please rotate your device to landscape mode
+        </div>
+      </div>
+    );
+  }
+
+  // Calculate canvas dimensions based on device
+  const canvasWidth = isMobile ? window.innerWidth : 1000;
+  const canvasHeight = isMobile ? window.innerHeight : 600;
+
   return (
-    <canvas
-      ref={canvasRef}
-      width={1000}
-      height={600}
-      style={{ 
-        border: `2px solid ${FRAME_COLOR}`,
-        borderRadius: '10px',
-        backgroundColor: SAND_COLOR
-      }}
-    />
+    <div className={`ant-farm ${isMobile ? 'mobile' : 'desktop'}`}>
+      <canvas
+        ref={canvasRef}
+        width={canvasWidth}
+        height={canvasHeight}
+        style={{ 
+          border: `2px solid ${FRAME_COLOR}`,
+          borderRadius: '10px',
+          backgroundColor: SAND_COLOR,
+          maxWidth: '100%',
+          maxHeight: '100%'
+        }}
+      />
+    </div>
   );
 };
 
